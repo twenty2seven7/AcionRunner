@@ -1,0 +1,114 @@
+{
+    "name": "actions-runner",
+    "displayName": "Actions Runner",
+    "description": "Manage and run custom actions/scripts from the sidebar.",
+    "version": "1.0.0",
+    "publisher": "twenty2seven7",
+    "icon": "resources/icon.png",
+    "engines": {
+        "vscode": "^1.60.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/twenty2seven7/AcionRunner.git"
+    },
+    "categories": ["Other"],
+    "activationEvents": [
+        "onView:projectActionRunnerView",
+        "onView:globalActionRunnerView"
+    ],
+    "main": "./extension.js",
+    "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "action-runner-container",
+                    "title": "Actions Runner",
+                    "icon": "resources/icon.png"
+                }
+            ]
+        },
+        "views": {
+            "action-runner-container": [
+                {
+                    "type": "webview",
+                    "id": "projectActionRunnerView",
+                    "name": "Project Actions",
+                    "icon": "resources/icon.png"
+                },
+                {
+                    "type": "webview",
+                    "id": "globalActionRunnerView",
+                    "name": "Global Actions",
+                    "icon": "resources/icon.png"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "projectActionRunner.refresh",
+                "title": "Refresh project actions list",
+                "icon": "$(refresh)"
+            },
+            {
+                "command": "projectActionRunner.addAction",
+                "title": "Add project action",
+                "icon": "$(add)"
+            },
+            {
+                "command": "projectActionRunner.openSettings",
+                "title": "Open settings for project actions",
+                "icon": "$(settings-gear)"
+            },
+            {
+                "command": "globalActionRunner.refresh",
+                "title": "Refresh global actions list",
+                "icon": "$(refresh)"
+            },
+            {
+                "command": "globalActionRunner.addAction",
+                "title": "Add global action",
+                "icon": "$(add)"
+            },
+            {
+                "command": "globalActionRunner.openSettings",
+                "title": "Open settings for global actions",
+                "icon": "$(settings-gear)"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "projectActionRunner.refresh",
+                    "when": "view == projectActionRunnerView",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "projectActionRunner.addAction",
+                    "when": "view == projectActionRunnerView",
+                    "group": "navigation@2"
+                },
+                {
+                    "command": "projectActionRunner.openSettings",
+                    "when": "view == projectActionRunnerView",
+                    "group": "navigation@3"
+                },
+                {
+                    "command": "globalActionRunner.refresh",
+                    "when": "view == globalActionRunnerView",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "globalActionRunner.addAction",
+                    "when": "view == globalActionRunnerView",
+                    "group": "navigation@2"
+                },
+                {
+                    "command": "globalActionRunner.openSettings",
+                    "when": "view == globalActionRunnerView",
+                    "group": "navigation@3"
+                }
+            ]
+        }
+    }
+}
