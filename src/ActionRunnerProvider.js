@@ -227,7 +227,7 @@ class ActionRunnerProvider {
 
     _argsResolve(args) {
         if (!Array.isArray(args) || args.length === 0) {
-            return '';
+            return [];
         }
         const workspaceFolders = vscode.workspace.workspaceFolders;
         const workspaceFolder = workspaceFolders && workspaceFolders.length > 0
@@ -285,6 +285,7 @@ class ActionRunnerProvider {
         let shellPath = undefined;
         let shellArgs = undefined;
         const args = this._argsResolve(action.args);
+        let command = '';
         switch (type) {
             case 'text':
                 await vscode.window.showTextDocument(vscode.Uri.file(action.path));
@@ -293,45 +294,55 @@ class ActionRunnerProvider {
             case 'python':
                 if (platform === 'win32') {
                     shellPath = 'cmd.exe';
-                    shellArgs = ['/k', 'python', action.path, ...args];
+                    shellArgs = ['/k'];
+                    command = `python "${action.path}" ${args.join(' ')}`;
                 } else {
                     shellPath = 'bash';
-                    shellArgs = ['-c', `python "${action.path}" ${args.join(' ')}`];
+                    shellArgs = ['-i']; 
+                    command = `python "${action.path}" ${args.join(' ')}`;
                 }
                 break;
 
             case 'bash':
                 shellPath = 'bash';
-                shellArgs = ['-c', `"${action.path}" ${args.join(' ')}`];
+                shellArgs = ['-i'];
+                command = `bash "${action.path}" ${args.join(' ')}`;
                 break;
 
             case 'bat':
                 shellPath = 'cmd.exe';
-                shellArgs = ['/k', action.path, ...args];
+                shellArgs = ['/k'];
+                command = `"${action.path}" ${args.join(' ')}`;
                 break;
 
             case 'exe':
                 shellPath = 'cmd.exe';
-                shellArgs = ['/k', action.path, ...args];
+                shellArgs = ['/k'];
+                command = `"${action.path}" ${args.join(' ')}`;
                 break;
 
             case 'bin':
                 shellPath = 'bash';
-                shellArgs = ['-c', action.path, ...args];
+                shellArgs = ['-i'];
+                command = `${action.path} ${args.join(' ')}`;
                 break;
 
             default:
                 vscode.window.showWarningMessage(`Unknown action type: ${type}`);
                 return;
         }
-        const terminal = vscode.window.createTerminal({
+        const terminalOptions = {
             name: `Action: ${action.name}`,
             cwd,
-            shellPath,
-            shellArgs,
             isTransient: false
-        });
+        };
+        if (shellPath) {
+            terminalOptions.shellPath = shellPath;
+            terminalOptions.shellArgs = shellArgs;
+        }
+        const terminal = vscode.window.createTerminal(terminalOptions);
         terminal.show();
+        terminal.sendText(command);
     };
 
 
