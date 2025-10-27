@@ -2,7 +2,7 @@
     "name": "actions-runner",
     "displayName": "Actions Runner",
     "description": "Manage and run custom actions/scripts from the sidebar.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "publisher": "twenty2seven7",
     "icon": "resources/icon.png",
     "engines": {
