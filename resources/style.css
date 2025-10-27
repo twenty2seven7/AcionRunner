@@ -24,6 +24,7 @@ body {
     background-color: var(--vscode-sideBar-background);
     border: 1px solid var(--vscode-sideBar-border);
     border-radius: 4px;
+    cursor: pointer;
 }
 
 
